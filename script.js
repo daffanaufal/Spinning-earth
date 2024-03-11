@@ -10,7 +10,6 @@ const countries = {
     "UK": { lat: 55.3781, lon: -3.436, flag: "https://www.countryflags.io/GB/flat/64.png" }
 };
 
-// Initialize Three.js
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
@@ -33,13 +32,13 @@ for (const country in countries) {
     const { lat, lon, flag } = countries[country];
     const latRad = (90 - lat) * (Math.PI / 180);
     const lonRad = (180 - lon) * (Math.PI / 180);
-    const radius = 10; // Mengubah radius sesuai dengan ukuran bumi yang baru
+    const radius = 10;
 
     const x = radius * Math.sin(latRad) * Math.cos(lonRad);
     const y = radius * Math.cos(latRad);
     const z = radius * Math.sin(latRad) * Math.sin(lonRad);
 
-    const dotGeometry = new THREE.SphereGeometry(0.2, 5, 5); // Mengubah ukuran pinpoint sesuai dengan ukuran bumi yang baru
+    const dotGeometry = new THREE.SphereGeometry(0.2, 5, 5); 
     const dotMaterial = new THREE.MeshBasicMaterial({ color: 0xFF0000 });
     const dot = new THREE.Mesh(dotGeometry, dotMaterial);
     dot.position.set(x, y, z);
@@ -49,7 +48,7 @@ for (const country in countries) {
 
     // Add country label
     const label = createLabel(country);
-    label.position.set(x + 0.4, y + 0.4, z); // Mengubah jarak label dari pusat bumi sesuai dengan ukuran bumi yang baru
+    label.position.set(x + 0.4, y + 0.4, z); 
     earthGroup.add(label);
 }
 
