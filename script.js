@@ -139,6 +139,13 @@ function toRadians(degrees) {
 
 function animate() {
     requestAnimationFrame(animate);
+
+    // Tetapkan rotasi objek agar hanya berputar ke arah barat laut
+    const rotationSpeed = 0.003;
+    earthGroup.rotation.x = -Math.PI / -4; // Putar ke arah barat laut (pojok kanan bawah)
+    earthGroup.rotation.y += rotationSpeed; // Putar perlahan untuk memberikan efek rotasi
+
     renderer.render(scene, camera);
 }
+
 animate();
