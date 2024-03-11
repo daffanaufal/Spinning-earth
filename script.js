@@ -10,6 +10,8 @@ const countries = {
     "UK": { lat: 55.3781, lon: -3.436, flag: "https://www.countryflags.io/GB/flat/64.png" }
 };
 
+
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
@@ -28,17 +30,23 @@ const earth = new THREE.Mesh(geometry, material);
 earthGroup.add(earth);
 
 // Add pinpointed locations 
-for (const country in countries) {
+for (const country of Object.keys(countries)) {
     const { lat, lon, flag } = countries[country];
     const latRad = (90 - lat) * (Math.PI / 180);
-    const lonRad = (180 - lon) * (Math.PI / 180);
-    const radius = 10;
+    let lonRad = lon * (Math.PI / 180); // Konversi lon ke radian
+
+    // Perbaikan nilai lon agar berada dalam rentang -180 hingga 180
+    if (lonRad > Math.PI) {
+        lonRad -= 2 * Math.PI;
+    }
+
+    const radius = 10; // Sesuaikan dengan radius bumi
 
     const x = radius * Math.sin(latRad) * Math.cos(lonRad);
     const y = radius * Math.cos(latRad);
-    const z = radius * Math.sin(latRad) * Math.sin(lonRad);
+    const z = -radius * Math.sin(latRad) * Math.sin(lonRad); // Perhatikan penggunaan negatif untuk z
 
-    const dotGeometry = new THREE.SphereGeometry(0.2, 5, 5); 
+    const dotGeometry = new THREE.SphereGeometry(0.2, 5, 5);
     const dotMaterial = new THREE.MeshBasicMaterial({ color: 0xFF0000 });
     const dot = new THREE.Mesh(dotGeometry, dotMaterial);
     dot.position.set(x, y, z);
@@ -48,9 +56,13 @@ for (const country in countries) {
 
     // Add country label
     const label = createLabel(country);
-    label.position.set(x + 0.4, y + 0.4, z); 
+    label.position.set(x + 0.5, y + 0.5, z); // Sesuaikan posisi label
     earthGroup.add(label);
 }
+
+
+
+
 
 
 // Function to create a text label
